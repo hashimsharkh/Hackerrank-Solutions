@@ -1,12 +1,10 @@
 import java.io.*;
 import java.math.*;
-import java.security.*;
 import java.text.*;
 import java.util.*;
-import java.util.concurrent.*;
 import java.util.regex.*;
 
-public class ReverseSinglyLinkedListSolution {
+public class CompareTwoLinkedListsSolution {
 
     static class SinglyLinkedListNode {
         public int data;
@@ -52,7 +50,7 @@ public class ReverseSinglyLinkedListSolution {
         }
     }
 
-    // Complete the reverse function below.
+    // Complete the compareLists function below.
 
     /*
      * For your reference:
@@ -63,42 +61,37 @@ public class ReverseSinglyLinkedListSolution {
      * }
      *
      */
-    static SinglyLinkedListNode reverse(SinglyLinkedListNode head) {
-        //Iterative method
+    static boolean compareLists(SinglyLinkedListNode head1, SinglyLinkedListNode head2) {
+     
 
-        if(head==null||head.next == null)
-            return head;
 
-        SinglyLinkedListNode current = head;
-        SinglyLinkedListNode prev=null;
-        SinglyLinkedListNode next;
-
-        while(current!=null)
-        {
-            next = current.next;//used to store the node afte the current node before overriding 
-            current.next = prev;//Assign currents node pointer to the previous node
-            prev = current;
-            current = next;
-
-        }
-        head = prev;
+     if(head1==null &&head2 ==null)
+        return true;
+    else if(head1==null ||head2==null)
+        return false;
+    
+    return head1.data == head2.data && compareLists(head1.next,head2.next);
+ 
+    //Iterative method
+    /*
+        if(head1==null &&head2==null)))
+            return true;
         
-        return head;
+        while(head1.data==head2.data)
+        {
+            if(head1.next==null &&head2.next==null)
+                return true;
+            else 
+                return false;
 
-        //A neat recursive way which will only allow us to worry about how to reverse the first pointer 
-        //But is expensive on the memory
-        /*
-            //Base cases when we dont have any elements or we only have one element
-            if(head==null||head.next == null)
-                return head;
-            SinglyLinkedListNode newHead = reverse(head.next);
-            head.next.next = head;
+            head1=head1.next;
+            head2 = head2.next;
+        }
 
-            head.next = null;
+        return false;
+        
+    */
 
-            return newHead;
-
-        */
     }
 
     private static final Scanner scanner = new Scanner(System.in);
@@ -110,21 +103,33 @@ public class ReverseSinglyLinkedListSolution {
         scanner.skip("(\r\n|[\n\r\u2028\u2029\u0085])?");
 
         for (int testsItr = 0; testsItr < tests; testsItr++) {
-            SinglyLinkedList llist = new SinglyLinkedList();
+            SinglyLinkedList llist1 = new SinglyLinkedList();
 
-            int llistCount = scanner.nextInt();
+            int llist1Count = scanner.nextInt();
             scanner.skip("(\r\n|[\n\r\u2028\u2029\u0085])?");
 
-            for (int i = 0; i < llistCount; i++) {
-                int llistItem = scanner.nextInt();
+            for (int i = 0; i < llist1Count; i++) {
+                int llist1Item = scanner.nextInt();
                 scanner.skip("(\r\n|[\n\r\u2028\u2029\u0085])?");
 
-                llist.insertNode(llistItem);
+                llist1.insertNode(llist1Item);
+            }
+          
+          	SinglyLinkedList llist2 = new SinglyLinkedList();
+
+            int llist2Count = scanner.nextInt();
+            scanner.skip("(\r\n|[\n\r\u2028\u2029\u0085])?");
+
+            for (int i = 0; i < llist2Count; i++) {
+                int llist2Item = scanner.nextInt();
+                scanner.skip("(\r\n|[\n\r\u2028\u2029\u0085])?");
+
+                llist2.insertNode(llist2Item);
             }
 
-            SinglyLinkedListNode llist1 = reverse(llist.head);
+            boolean result = compareLists(llist1.head, llist2.head);
 
-            printSinglyLinkedList(llist1, " ", bufferedWriter);
+            bufferedWriter.write(String.valueOf(result ? 1 : 0));
             bufferedWriter.newLine();
         }
 
